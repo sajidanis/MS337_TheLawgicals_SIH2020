@@ -3,10 +3,10 @@ from ocr import ocr_text
 
 app = Flask(__name__)
 
-#pytesseract.pytesseract.tesseract_cmd = ‘/app/.apt/usr/bin/tesseract’
-
 @app.route("/ocr", methods=['GET', 'POST'])
 def ocr_api():
+    if request.method == 'GET':
+        return "This route only accepts post requests"
     if request.method == 'POST':
         post_data = request.get_json()
         url = post_data['url']
