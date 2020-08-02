@@ -1,6 +1,6 @@
-# Frontend 
+# lawgicals
 
-## Fronend setup
+## Project setup
 ```
 npm install
 ```

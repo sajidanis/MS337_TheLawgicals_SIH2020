@@ -1,5 +1,6 @@
 <template>
   <v-app app>
+    <notifications position="bottom right" group="main" />
     <router-view></router-view>
   </v-app>
 </template>

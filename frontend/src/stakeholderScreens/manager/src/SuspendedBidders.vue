@@ -15,65 +15,33 @@
 <script>
 export default {
     name: 'ViewAll',
+    mounted() {
+        let loader = this.$loading.show({
+            container: this.$refs.formContainer,
+            canCancel: false,
+            onCancel: null,
+        });
 
+        this.$api.get('/evidence/all')
+            .then((response) => {
+                loader.hide();
+                if (response.data.length > 0){
+                    this.covers = response.data;
+                    this.showNotification("Success","Fetched all evidences.")
+                }else {
+                    this.showNotification("Note","No evidences available.","info")
+                }
+
+            }, (error) => {
+                loader.hide();
+                console.log(error);
+                this.showNotification("Error","No evidences available.","error")
+            });
+    },
     data() {
         return {
             covers: [
-                {
-                  Barcode: 'EMS1-2000007',
-                  ItemClass: 'Evidence',
-                  Description: 'Apple MacBook Pro Laptop',
-                  Location: 'Officer\'s Custody',
-                  IncidentNumber: 'PDE20181200379',
-                  CaseOfficer:'Officer Demo',
-                  CaseType:'Theft',
-                  ItemType:'General',
-                  ItemStatus:''
-                },
-                {
-                  Barcode: 'EMS1-2000006',
-                  ItemClass: 'Evidence',
-                  Description: ' $2204',
-                  Location: 'Evidence High Value Vault',
-                  IncidentNumber: 'PDE20200400234',
-                  CaseOfficer:'Money',
-                  CaseType:'Death Investigation',
-                  ItemType:'General',
-                  ItemStatus:''
-                },
-                {
-                  Barcode: 'EMS1-2000005',
-                  ItemClass: 'Evidence',
-                  Description: ' Blood Sample from Broken Window',
-                  Location: 'Evidence High Value Vault',
-                  IncidentNumber: 'PDE20181200379',
-                  CaseOfficer:'Officer Demo',
-                  CaseType:'Theft',
-                  ItemType:'General',
-                  ItemStatus:''
-                },
-              {
-                Barcode: 'EMS1-2000005',
-                ItemClass: 'Evidence',
-                Description: 'Crime Scene Photos',
-                Location: 'Evidence Locker - 1BCG',
-                IncidentNumber: 'PDE20181200379',
-                CaseOfficer:'Officer Demo',
-                CaseType:'Forgery',
-                ItemType:'Money',
-                ItemStatus:''
-              },
-              {
-                Barcode: 'EMS1-2000004',
-                ItemClass: 'Evidence',
-                Description: 'Witness Statement, Jason Kid',
-                Location: 'PDEVIDENCE Digital Storage',
-                IncidentNumber: 'PD Evidence',
-                CaseOfficer:'Theft',
-                CaseType:'General',
-                ItemType:'',
-                ItemStatus:''
-              },
+
             ],
             headers: [
                 {
@@ -82,7 +50,7 @@ export default {
                 },
                 {
                     text: 'ItemClass',
-                    value: 'ItemClass',
+                    value: 'caseInformation.itemClass',
                 },
                 {
                     text: 'Description',
@@ -91,27 +59,27 @@ export default {
 
                 {
                     text: 'Location',
-                    value: 'Location',
+                    value: 'associatedPerson.address',
                 },
                 {
                     text: ' Incident Number',
-                    value: 'IncidentNumber',
+                    value: 'id',
                 },
               {
                 text: 'Case Officer',
-                value: 'CaseOfficer',
+                value: 'caseInformation.aseOfficer',
               },
               {
                 text: ' Case type',
-                value: 'CaseType',
+                value: 'caseInformation.caseType',
               },
               {
                 text: ' Item Type',
-                value: 'ItemType',
+                value: 'itemInformation.itemType',
               },
               {
                 text: ' Item Status',
-                value: 'ItemStatus',
+                value: 'itemInformation.itemStatus',
               },
             ],
         }
