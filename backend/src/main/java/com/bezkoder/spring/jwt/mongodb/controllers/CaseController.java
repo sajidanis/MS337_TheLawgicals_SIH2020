@@ -2,6 +2,7 @@ package com.bezkoder.spring.jwt.mongodb.controllers;
 
 
 import com.bezkoder.spring.jwt.mongodb.cloudVision.CloudVisionService;
+import com.bezkoder.spring.jwt.mongodb.models.CaseInformation;
 import com.bezkoder.spring.jwt.mongodb.models.Evidence;
 import com.bezkoder.spring.jwt.mongodb.network.response.BaseResponse;
 import com.bezkoder.spring.jwt.mongodb.repository.AssociatedPersonRepository;
@@ -19,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -27,8 +27,8 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/evidence")
-public class EvidenceController {
+@RequestMapping("/api/case")
+public class CaseController {
 
     @Autowired
     private EvidenceRepository evidenceRepository;
@@ -52,29 +52,29 @@ public class EvidenceController {
     CloudVisionService cloudVisionService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllDraftTenders() {
+    public ResponseEntity<?> getAll() {
         ResponseEntity<?> result = null;
 
-        List<Evidence> allEvidences = evidenceRepository.findAll();
-        result = new ResponseEntity<>(allEvidences, HttpStatus.CREATED);
+        List<CaseInformation> allCaseInfo = caseInformationRepository.findAll();
+        result = new ResponseEntity<>(allCaseInfo, HttpStatus.CREATED);
 
         return result;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST,consumes = MULTIPART_FORM_DATA_VALUE)
     public @ResponseBody ResponseEntity<?> upload( @RequestParam(value = "document",required = false) MultipartFile document,
-                                                   @RequestParam("evidence") String evidenceString) throws Exception {
+                                                   @RequestParam("case") String caseString) throws Exception {
         ResponseEntity<?> result = null;
 
         ObjectMapper objectMapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        Evidence evidence1 = objectMapper.readValue(evidenceString, Evidence.class);
+        CaseInformation caseInformation = objectMapper.readValue(caseString, CaseInformation.class);
 
         if (document != null){
             Path evidencePath = Path.of(document.getOriginalFilename());
             minioService.upload(evidencePath, document.getInputStream(), document.getContentType());
-            evidence1.setDocumentPath(String.valueOf(evidencePath));
+            caseInformation.setCaseDocumentPath(String.valueOf(evidencePath));
 
             String documentText = null;
             BatchAnnotateImagesResponse response = cloudVisionService.detectTextInputString(document.getInputStream());
@@ -84,17 +84,13 @@ public class EvidenceController {
                 documentText = "Unable to process";
             }
 
-            evidence1.setDocumentConvertedText(documentText);
+            caseInformation.setDocumentConvertedText(documentText);
         }
 
         try {
-            associatedPersonRepository.save(evidence1.getAssociatedPerson());
-            itemInformationRepository.save(evidence1.getItemInformation());
-            caseInformationRepository.save(evidence1.getCaseInformation());
-
-            Evidence _evidence = evidenceRepository.save(evidence1);
-            transactionService.log("","evidence_created","",_evidence);
-            result = new ResponseEntity<>(_evidence, HttpStatus.CREATED);
+            CaseInformation _caseInformation = caseInformationRepository.save(caseInformation);
+            transactionService.log("","case_created","",_caseInformation);
+            result = new ResponseEntity<>(_caseInformation, HttpStatus.CREATED);
         }catch (Exception e){
             e.printStackTrace();
             result = ResponseEntity
@@ -104,26 +100,4 @@ public class EvidenceController {
 
         return result;
     }
-
-//    @PostMapping("/create")
-//    public ResponseEntity<?> createTender(@Valid @RequestBody Evidence evidence) {
-//        ResponseEntity<?> result = null;
-//
-//
-//        try {
-//            associatedPersonRepository.save(evidence.getAssociatedPerson());
-//            itemInformationRepository.save(evidence.getItemInformation());
-//            caseInformationRepository.save(evidence.getCaseInformation());
-//
-//            Evidence _evidence = evidenceRepository.save(evidence);
-//            result = new ResponseEntity<>(_evidence, HttpStatus.CREATED);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            result = ResponseEntity
-//                    .badRequest()
-//                    .body(new BaseResponse("Bad Response.",false));
-//        }
-//
-//        return result;
-//    }
 }

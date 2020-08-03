@@ -23,6 +23,15 @@ public class Evidence {
     private ItemInformation itemInformation;
 
     private String documentPath;
+    private String documentConvertedText;
+
+    public String getDocumentConvertedText() {
+        return documentConvertedText;
+    }
+
+    public void setDocumentConvertedText(String documentConvertedText) {
+        this.documentConvertedText = documentConvertedText;
+    }
 
     public String getDocumentPath() {
         return documentPath;

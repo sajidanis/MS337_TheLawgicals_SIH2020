@@ -15,6 +15,26 @@ public class CaseInformation {
     private String actionDate;
     private String caseOfficer;
 
+    private String caseDocumentPath;
+
+    private String documentConvertedText;
+
+    public String getDocumentConvertedText() {
+        return documentConvertedText;
+    }
+
+    public void setDocumentConvertedText(String documentConvertedText) {
+        this.documentConvertedText = documentConvertedText;
+    }
+
+
+    public String getCaseDocumentPath() {
+        return caseDocumentPath;
+    }
+
+    public void setCaseDocumentPath(String caseDocumentPath) {
+        this.caseDocumentPath = caseDocumentPath;
+    }
 
     public String getId() {
         return id;
