@@ -6,7 +6,21 @@
             </v-toolbar>
             <v-alert>All evidences can be seen here.</v-alert>
 
-                <v-data-table :headers="headers" :items="covers" item-key="name">
+        <v-row>
+            <v-col cols="5">
+                <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Enter Evidence ID/Type/Location"
+                        solo
+                        hide-details
+                ></v-text-field>
+            </v-col>
+        </v-row>
+
+                <v-data-table
+                        :search="search"
+                        :headers="headers" :items="covers" item-key="name">
 
                     <template v-slot:item.documentPath="{ item }">
                         <v-btn
@@ -20,10 +34,11 @@
 
                     <template v-slot:item.ocr="{ item }">
                         <v-btn
+                                style="margin: 10px; padding: 10px;"
                                 class="blue"
                                 dark
-                                small
-                                text
+
+
                                 v-on:click="onOCRClicked(item)"
                         >Convert Document <br> To Text</v-btn>
                     </template>
@@ -89,34 +104,40 @@ export default {
         },
         onOCRClicked(item){
 
-            console.log(item);
-            let request = {"fileName":item.documentPath};
+            if (item.documentConvertedText){
+                this.showDialog = true;
+                this.ocrText = item.documentConvertedText;
 
-            let loader = this.$loading.show({
-                container: this.$refs.formContainer,
-                canCancel: false,
-                onCancel: null,
-            });
+            }else {
 
-            //hit api call
-            this.$api.post('/download/ocr', request)
-                .then((response) => {
-                    loader.hide();
-                    if (response.data.status === true){
+                let request = {"fileName":item.documentPath};
 
-                        this.showNotification("Success","Processed Document to Text.")
-                        this.showDialog = true;
-                        this.ocrText = response.data.data;
-                    }else {
-                        this.showNotification("Error","Failed to process document.","info")
-                    }
-
-                }, (error) => {
-
-                    loader.hide();
-                    console.log(error);
-                    this.showNotification("Error","Failed to process document..","error")
+                let loader = this.$loading.show({
+                    container: this.$refs.formContainer,
+                    canCancel: false,
+                    onCancel: null,
                 });
+                //hit api call
+                this.$api.post('/download/ocr', request)
+                    .then((response) => {
+                        loader.hide();
+                        if (response.data.status === true){
+
+                            this.showNotification("Success","Processed Document to Text.")
+                            this.showDialog = true;
+                            this.ocrText = response.data.data;
+                        }else {
+                            this.showNotification("Error","Failed to process document.","info")
+                        }
+
+                    }, (error) => {
+
+                        loader.hide();
+                        console.log(error);
+                        this.showNotification("Error","Failed to process document..","error")
+                    });
+            }
+
 
         }
     },
@@ -147,26 +168,25 @@ export default {
         return {
             showDialog:false,
             ocrText:"",
+            search: '',
             covers: [
 
             ],
             headers: [
+
                 {
-                    text: 'ID',
-                    value: 'id',
+                    text: 'Evidence ID',
+                    value: 'caseInformation.id',
+                },
+                {
+                    text: ' Case ID',
+                    value: 'caseInformation.id',
                 },
                 {
                     text: 'Location',
                     value: 'associatedPerson.address',
                 },
-                {
-                    text: ' Incident Number',
-                    value: 'id',
-                },
-              {
-                text: ' Case type',
-                value: 'caseInformation.caseType',
-              },
+
               {
                 text: ' Item Type',
                 value: 'itemInformation.itemType',
@@ -176,11 +196,11 @@ export default {
                 value: 'itemInformation.itemStatus',
               },
                 {
-                    text: ' Download Document',
+                    text: ' Evidence Document',
                     value: 'documentPath',
                 },
                 {
-                    text:'Optical character recognition (OCR)',
+                    text:'Evidence Document Text',
                     value: 'ocr',
                 }
             ],

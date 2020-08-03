@@ -11,7 +11,7 @@
                     <v-subheader>Item Class</v-subheader>
                   </v-col>
                   <v-col cols="3">
-                    <v-select :items="itemClass" outlined v-model="input.caseInformation.itemClass"></v-select>
+                    <v-select :items="itemClass" disabled outlined v-model="caseVal.itemClass"></v-select>
                   </v-col>
                 </v-row>
 
@@ -20,7 +20,7 @@
                         <v-subheader>Incident Number</v-subheader>
                     </v-col>
                     <v-col cols="3">
-                        <v-text-field outlined v-model="input.caseInformation.incidentNumber"></v-text-field>
+                        <v-text-field outlined disabled v-model="caseVal.incidentNumber"></v-text-field>
                     </v-col>
                 </v-row>
 
@@ -29,7 +29,7 @@
                         <v-subheader>Case Type</v-subheader>
                     </v-col>
                     <v-col cols="3">
-                        <v-text-field outlined v-model="input.caseInformation.caseType" ></v-text-field>
+                        <v-text-field outlined disabled v-model="caseVal.caseType" ></v-text-field>
                     </v-col>
                 </v-row>
 
@@ -38,7 +38,7 @@
                         <v-subheader>Next Action Date</v-subheader>
                     </v-col>
                     <v-col cols="3">
-                        <v-text-field outlined v-model="input.caseInformation.actionDate"></v-text-field>
+                        <v-text-field outlined disabled v-model="caseVal.actionDate"></v-text-field>
                     </v-col>
                 </v-row>
 
@@ -47,7 +47,7 @@
                         <v-subheader>Case Officer</v-subheader>
                     </v-col>
                     <v-col cols="3">
-                       <v-text-field outlined v-model="input.caseInformation.caseOfficer"></v-text-field>
+                       <v-text-field outlined disabled v-model="caseVal.caseOfficer"></v-text-field>
                     </v-col>
                 </v-row>
               <h3 style="color:#0099FF" align="left">Associated Person</h3>
@@ -150,6 +150,7 @@
 <script>
 export default {
     name: 'AddBidder',
+    props:["caseVal"],
     methods:{
         handleFileUpload(){
 
@@ -167,6 +168,7 @@ export default {
 
             let formData = new FormData();
             formData.append('document', this.file);
+            this.input["caseInformation"] = this.caseVal;
             formData.append("evidence",JSON.stringify( this.input));
 
             this.$api.post('/evidence/create',formData,{

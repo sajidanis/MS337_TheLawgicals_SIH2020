@@ -4,7 +4,20 @@
         <v-toolbar class="blue lighten-2">
             <v-toolbar-title>Evidences</v-toolbar-title>
         </v-toolbar>
+
         <v-alert>All evidences can be seen here.</v-alert>
+
+        <v-row>
+            <v-col cols="5">
+                <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Enter Case ID/Type/Location"
+                        solo
+                        hide-details
+                ></v-text-field>
+            </v-col>
+        </v-row>
 
         <v-data-table :headers="headers" :items="covers" item-key="name">
 
@@ -43,7 +56,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </div> 
+    </div>
 </template>
 
 <script>
@@ -90,33 +103,42 @@ export default {
         onOCRClicked(item){
 
             console.log(item);
-            let request = {"fileName":item.documentPath};
 
-            let loader = this.$loading.show({
-                container: this.$refs.formContainer,
-                canCancel: false,
-                onCancel: null,
-            });
+           if (item.documentConvertedText){
+               this.showDialog = true;
+               this.ocrText = item.documentConvertedText;
 
-            //hit api call
-            this.$api.post('/download/ocr', request)
-                .then((response) => {
-                    loader.hide();
-                    if (response.data.status === true){
+           }else {
 
-                        this.showNotification("Success","Processed Document to Text.")
-                        this.showDialog = true;
-                        this.ocrText = response.data.data;
-                    }else {
-                        this.showNotification("Error","Failed to process document.","info")
-                    }
+               let request = {"fileName":item.documentPath};
 
-                }, (error) => {
+               let loader = this.$loading.show({
+                   container: this.$refs.formContainer,
+                   canCancel: false,
+                   onCancel: null,
+               });
+               //hit api call
+               this.$api.post('/download/ocr', request)
+                   .then((response) => {
+                       loader.hide();
+                       if (response.data.status === true){
 
-                    loader.hide();
-                    console.log(error);
-                    this.showNotification("Error","Failed to process document..","error")
-                });
+                           this.showNotification("Success","Processed Document to Text.")
+                           this.showDialog = true;
+                           this.ocrText = response.data.data;
+                       }else {
+                           this.showNotification("Error","Failed to process document.","info")
+                       }
+
+                   }, (error) => {
+
+                       loader.hide();
+                       console.log(error);
+                       this.showNotification("Error","Failed to process document..","error")
+                   });
+           }
+
+
 
         }
     },
@@ -147,20 +169,16 @@ export default {
         return {
             showDialog:false,
             ocrText:"",
+            search: '',
             covers: [],
-            headers: [
-                {
-                    text: 'ID',
-                    value: 'id',
-                },
+            headers:[
+
+
                 {
                     text: 'Location',
                     value: 'associatedPerson.address',
                 },
-                {
-                    text: ' Incident Number',
-                    value: 'id',
-                },
+
                 {
                     text: ' Case type',
                     value: 'caseInformation.caseType',
@@ -174,7 +192,7 @@ export default {
                     value: 'itemInformation.itemStatus',
                 },
                 {
-                    text: ' Download Document',
+                    text: ' Evidence Document',
                     value: 'documentPath',
                 },
                 {
