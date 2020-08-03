@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="896f1d0c-0793-4d22-afa0-f793c8f1fa18" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/BidEvaluationCommitteeChaincode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/BidderChaincode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/CVOChaincode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/InspectionAgencyChaincode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/SupplyChainContracts.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/TenderManagerChaincode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/MyAsset.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/TenderContract.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/MyAssetContract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/TenderCreatorContract.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/MyAssetContractTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/TenderCreatorContractTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1fZbpa4Wu706m5cMiuIpKHoKAaZ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="show.unlinked.gradle.project.popup" value="true" />
+  </component>
+  <component name="RunManager" selected="Gradle.fabric-contract-example-gradle [shadowJar]">
+    <configuration name="MyAssetContractTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;org.example.MyAssetContractTest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="fabric-contract-example-gradle [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="shadowJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.fabric-contract-example-gradle [shadowJar]" />
+        <item itemvalue="Gradle.MyAssetContractTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="896f1d0c-0793-4d22-afa0-f793c8f1fa18" name="Default Changelist" comment="" />
+      <created>1596428746223</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1596428746223</updated>
+      <workItem from="1596428755717" duration="4049000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="678" y="27" width="678" height="741" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1596440606009">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state x="678" y="27" width="678" height="741" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.27.1366.741@0.27.1366.741" timestamp="1596440606009" />
+    <state width="1324" height="192" key="GridCell.Tab.0.bottom" timestamp="1596441622737">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state width="1324" height="192" key="GridCell.Tab.0.bottom/0.27.1366.741@0.27.1366.741" timestamp="1596441622737" />
+    <state width="1324" height="192" key="GridCell.Tab.0.center" timestamp="1596441622736">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state width="1324" height="192" key="GridCell.Tab.0.center/0.27.1366.741@0.27.1366.741" timestamp="1596441622736" />
+    <state width="1324" height="192" key="GridCell.Tab.0.left" timestamp="1596441622736">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state width="1324" height="192" key="GridCell.Tab.0.left/0.27.1366.741@0.27.1366.741" timestamp="1596441622736" />
+    <state width="1324" height="192" key="GridCell.Tab.0.right" timestamp="1596441622737">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state width="1324" height="192" key="GridCell.Tab.0.right/0.27.1366.741@0.27.1366.741" timestamp="1596441622737" />
+  </component>
+</project>

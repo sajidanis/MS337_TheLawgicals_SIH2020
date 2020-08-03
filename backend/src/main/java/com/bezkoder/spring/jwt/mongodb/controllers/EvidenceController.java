@@ -1,6 +1,7 @@
 package com.bezkoder.spring.jwt.mongodb.controllers;
 
 
+import com.bezkoder.spring.jwt.mongodb.cloudVision.CloudVisionService;
 import com.bezkoder.spring.jwt.mongodb.models.Evidence;
 import com.bezkoder.spring.jwt.mongodb.network.response.BaseResponse;
 import com.bezkoder.spring.jwt.mongodb.repository.AssociatedPersonRepository;
@@ -10,6 +11,7 @@ import com.bezkoder.spring.jwt.mongodb.repository.ItemInformationRepository;
 import com.bezkoder.spring.jwt.mongodb.services.TransactionService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.cloud.vision.v1.BatchAnnotateImagesResponse;
 import com.jlefebure.spring.boot.minio.MinioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +48,9 @@ public class EvidenceController {
     @Autowired
     TransactionService transactionService;
 
+    @Autowired
+    CloudVisionService cloudVisionService;
+
     @GetMapping("/all")
     public ResponseEntity<?> getAllDraftTenders() {
         ResponseEntity<?> result = null;
@@ -70,6 +75,16 @@ public class EvidenceController {
             Path evidencePath = Path.of(document.getOriginalFilename());
             minioService.upload(evidencePath, document.getInputStream(), document.getContentType());
             evidence1.setDocumentPath(String.valueOf(evidencePath));
+
+            String documentText = null;
+            BatchAnnotateImagesResponse response = cloudVisionService.detectTextInputString(document.getInputStream());
+            if (response.getResponsesList().size() > 0){
+                documentText = response.getResponsesList().get(0).getFullTextAnnotation().getText();
+            }else {
+                documentText = "Unable to process";
+            }
+
+            evidence1.setDocumentConvertedText(documentText);
         }
 
         try {
