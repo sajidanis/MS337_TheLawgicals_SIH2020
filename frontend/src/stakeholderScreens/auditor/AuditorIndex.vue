@@ -49,6 +49,11 @@ export default {
           route: { name: "EvidenceFraudReport" },
         },
         {
+          title: "Auditor Logs",
+          icon: "",
+          route: { name: "AuditorLogs" },
+        },
+        {
           title: "Back To Stakeholders Dashboard",
           icon: "fa-home",
           route: "/dashboard",
