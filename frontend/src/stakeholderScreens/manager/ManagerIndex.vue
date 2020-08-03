@@ -27,9 +27,14 @@ export default {
         return {
             managerNavItems: [
                 {
-                    title: 'Submit Evidence',
+                    title: 'Create Case',
                     icon: ' ',
-                    route: { name: 'AddBidder' },
+                    route: { name: 'CreateCase' },
+                },
+                {
+                    title: 'View All Cases',
+                    icon: ' ',
+                    route: { name: 'ViewAllCase' },
                 },
                 {
                     title: 'View All Evidence',

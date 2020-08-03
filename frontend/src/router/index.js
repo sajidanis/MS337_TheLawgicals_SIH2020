@@ -27,8 +27,25 @@ Vue.use(VueRouter)
       component: () => import('../stakeholderScreens/manager/ManagerIndex.vue'),
       children: [
         {
+          path: 'createCase',
+          name: 'CreateCase',
+          component: () =>
+              import(
+                  '@/stakeholderScreens/manager/CreateCase.vue'
+                  ),
+        },
+        {
+          path: 'allCases',
+          name: 'ViewAllCase',
+          component: () =>
+              import(
+                  '@/stakeholderScreens/manager/ViewAllCase.vue'
+                  ),
+        },
+        {
           path: 'addEvidence',
-          name: 'AddBidder',
+          name: 'AddEvidence',
+          props:true,
           component: () =>
               import(
                   '@/stakeholderScreens/manager/src/addEvidence/SubmitEvidence.vue'

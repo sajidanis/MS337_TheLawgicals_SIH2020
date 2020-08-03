@@ -26,6 +26,7 @@ export default {
     },
     data() {
         return {
+            search: '',
             miniVariant: true,
             deponentNavItems: [
               {
