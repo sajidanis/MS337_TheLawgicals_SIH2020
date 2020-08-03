@@ -22,6 +22,15 @@ public class Evidence {
     @DBRef
     private ItemInformation itemInformation;
 
+    private String documentPath;
+
+    public String getDocumentPath() {
+        return documentPath;
+    }
+
+    public void setDocumentPath(String documentPath) {
+        this.documentPath = documentPath;
+    }
 
     public String getId() {
         return id;

@@ -7,13 +7,21 @@ import com.bezkoder.spring.jwt.mongodb.repository.AssociatedPersonRepository;
 import com.bezkoder.spring.jwt.mongodb.repository.CaseInformationRepository;
 import com.bezkoder.spring.jwt.mongodb.repository.EvidenceRepository;
 import com.bezkoder.spring.jwt.mongodb.repository.ItemInformationRepository;
+import com.bezkoder.spring.jwt.mongodb.services.TransactionService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jlefebure.spring.boot.minio.MinioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.nio.file.Path;
 import java.util.List;
+
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -32,6 +40,12 @@ public class EvidenceController {
     @Autowired
     private ItemInformationRepository itemInformationRepository;
 
+    @Autowired
+    MinioService minioService;
+
+    @Autowired
+    TransactionService transactionService;
+
     @GetMapping("/all")
     public ResponseEntity<?> getAllDraftTenders() {
         ResponseEntity<?> result = null;
@@ -42,16 +56,29 @@ public class EvidenceController {
         return result;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> createTender(@Valid @RequestBody Evidence evidence) {
+    @RequestMapping(value = "/create", method = RequestMethod.POST,consumes = MULTIPART_FORM_DATA_VALUE)
+    public @ResponseBody ResponseEntity<?> upload( @RequestParam(value = "document",required = false) MultipartFile document,
+                                                   @RequestParam("evidence") String evidenceString) throws Exception {
         ResponseEntity<?> result = null;
 
-        try {
-            associatedPersonRepository.save(evidence.getAssociatedPerson());
-            itemInformationRepository.save(evidence.getItemInformation());
-            caseInformationRepository.save(evidence.getCaseInformation());
+        ObjectMapper objectMapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-            Evidence _evidence = evidenceRepository.save(evidence);
+        Evidence evidence1 = objectMapper.readValue(evidenceString, Evidence.class);
+
+        if (document != null){
+            Path evidencePath = Path.of(document.getOriginalFilename());
+            minioService.upload(evidencePath, document.getInputStream(), document.getContentType());
+            evidence1.setDocumentPath(String.valueOf(evidencePath));
+        }
+
+        try {
+            associatedPersonRepository.save(evidence1.getAssociatedPerson());
+            itemInformationRepository.save(evidence1.getItemInformation());
+            caseInformationRepository.save(evidence1.getCaseInformation());
+
+            Evidence _evidence = evidenceRepository.save(evidence1);
+            transactionService.log("","evidence_created","",_evidence);
             result = new ResponseEntity<>(_evidence, HttpStatus.CREATED);
         }catch (Exception e){
             e.printStackTrace();
@@ -62,4 +89,26 @@ public class EvidenceController {
 
         return result;
     }
+
+//    @PostMapping("/create")
+//    public ResponseEntity<?> createTender(@Valid @RequestBody Evidence evidence) {
+//        ResponseEntity<?> result = null;
+//
+//
+//        try {
+//            associatedPersonRepository.save(evidence.getAssociatedPerson());
+//            itemInformationRepository.save(evidence.getItemInformation());
+//            caseInformationRepository.save(evidence.getCaseInformation());
+//
+//            Evidence _evidence = evidenceRepository.save(evidence);
+//            result = new ResponseEntity<>(_evidence, HttpStatus.CREATED);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            result = ResponseEntity
+//                    .badRequest()
+//                    .body(new BaseResponse("Bad Response.",false));
+//        }
+//
+//        return result;
+//    }
 }
