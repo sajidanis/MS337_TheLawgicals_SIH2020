@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
         <AppBar />
         <SideBar :navItems="managerNavItems"  />
         <v-main app>

@@ -131,7 +131,15 @@
               </v-row>
 
                 <br />
+                <v-row >
+                    <v-col cols="5">
+                        <h4>Select File for Evidence</h4>
+                        <v-file-input justify="left" ref="inputUpload" v-model="file"  v-on:change="handleFileUpload()" dense></v-file-input>
+                    </v-col>
+
+                </v-row>
                 <div class="text-center">
+
                     <v-btn class="primary" v-on:click="submitClicked()">Submit Evidence</v-btn>
                 </div>
             </v-form>
@@ -143,16 +151,29 @@
 export default {
     name: 'AddBidder',
     methods:{
+        handleFileUpload(){
+
+            console.log("this.file")
+            console.log(this.file)
+        },
         submitClicked(){
 
-            let request = this.input;
+
             let loader = this.$loading.show({
                 container: this.$refs.formContainer,
                 canCancel: false,
                 onCancel: null,
             });
 
-            this.$api.post('/evidence/create',request)
+            let formData = new FormData();
+            formData.append('document', this.file);
+            formData.append("evidence",JSON.stringify( this.input));
+
+            this.$api.post('/evidence/create',formData,{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
                 .then((response) => {
                     loader.hide();
                     if (response.data.id !== null){
@@ -176,6 +197,7 @@ export default {
     },
     data() {
         return {
+            file:null,
             input:{
                 caseInformation:{
                     itemClass: "",

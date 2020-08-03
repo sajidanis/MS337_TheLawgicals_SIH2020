@@ -105,6 +105,11 @@ Vue.use(VueRouter)
           name: 'EvidenceInquiries',
           component: () => import('@/stakeholderScreens/auditor/src/EvidenceInquiries.vue'),
         },
+        {
+          path: 'auditorLogs',
+          name: 'AuditorLogs',
+          component: () => import('@/stakeholderScreens/auditor/src/AuditorLogs.vue'),
+        },
       ],
     },
      // Deponent
